@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css";
+import TextAdd from "./components/TextAdd";
+import TextDetail from "./components/TextDetail";
+import TextList from "./components/TextList";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      style={{ marginTop: "5px" }}
+      className="ui raised very padded text container segment"
+    >
+      <Router>
+        <Routes>
+          <Route path="/" element={<TextList />} />
+          <Route path="/posts/:id" element={<TextDetail />} />
+          <Route path="/text-add" element={<TextAdd />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
