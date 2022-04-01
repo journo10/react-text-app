@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { api } from "../../api"
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { api } from "../../api";
 
 const initialState = {
   title: "",
   content: "",
 };
-const TextForm = (props) => {
+const TextForm = ({ textEdit }) => {
   const [text, setText] = useState(initialState);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const handelOnChange = (e) => {
     setText({
@@ -25,21 +26,35 @@ const TextForm = (props) => {
       title: text.title,
       content: text.content,
     };
-   api()
-      .post("https://react-yazi-yorum.herokuapp.com/posts", newText)
-      .then((res) => {
-        navigate("/");
-      })
-      .catch((error) => {
-        setError("Başlık ve yazı içeriği alanları zorunludur.");
-      });
+    //Text Edit
+    if (textEdit?.title) {
+      api()
+        .put(`/posts/${id}`, newText)
+        .then((res) => {
+          navigate(`/posts/${id}`);
+        })
+        .catch((error) => {
+          setError("Başlık ve yazı içeriği alanları zorunludur.");
+        });
+    } else {
+      // Text Add
+      api()
+        .post("https://react-yazi-yorum.herokuapp.com/posts", newText)
+        .then((res) => {
+          navigate("/");
+        })
+        .catch((error) => {
+          setError("Başlık ve yazı içeriği alanları zorunludur.");
+        });
+    }
   };
 
-  // useEffect(() => {
-  //   if (props.text?.title && props.text?.content) {
-  //     setText(props.text);
-  //   }
-  // }, [props.text]);
+  //Text Edit
+  useEffect(() => {
+    if (textEdit?.title && textEdit?.content) {
+      setText(textEdit);
+    }
+  }, [textEdit]);
   return (
     <>
       {error && (

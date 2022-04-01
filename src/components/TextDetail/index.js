@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import TextComments from "../TextComments";
+import DeleteModal from "../DeleteModal";
 
 const TextDetail = () => {
   const [textDetail, setTextDetail] = useState({});
@@ -43,6 +44,10 @@ const TextDetail = () => {
     <>
       <h2 className="ui header">{textDetail.title}</h2>
       <p>{textDetail.created_at}</p>
+      <div className="ui buttons">
+        <Link to={`/posts/${textDetail.id}/edit`} className="ui blue button">Düzenle</Link>
+        <DeleteModal textDetail={textDetail}  />
+      </div>
       <p>{textDetail.content}</p>
       <TextComments
         textCommments={textCommments}
